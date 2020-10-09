@@ -226,6 +226,7 @@ class Application():
 	# Update the forge version combobox
 	def updateForgeVersions(self):
 		sortedVersions = sorted([entry for entry in twitchapi.getModloaderList() if entry['gameVersion'] == self.minecraftVersion], key=lambda x : version.parse(x['name']), reverse=True)
+		#print(sortedVersions)
 		#forgeList = []
 		self.forgeVersionDict = {}
 		for versionEntry in sortedVersions:
@@ -244,7 +245,7 @@ class Application():
 		self.comboboxForgeVersion['values'] = [key for key, value in self.forgeVersionDict.items()]
 		try:
 			self.comboboxForgeVersion.current(0)
-			self.updateForgeVersion()
+			self.selectForgeVersion()
 		except:
 			self.comboboxForgeVersion['state'] = "disabled"
 			self.comboboxForgeVersion['values'] = ["No available Forge for this version of Minecraft"]
