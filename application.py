@@ -286,6 +286,24 @@ class Application():
 		print(json.dumps(manifest))
 		return manifest
 		
+	# Creates a modpack modlist with credits
+	#   Returns the generated HTML string to be written as an HTML file separately
+	def createModpackCredits(self):
+		html = "<!DOCTYPE html><html><body>\n"
+
+		# Write modpack information to HTML string
+		html = html + "<h1>Modpack Information</h1><p>Name: {}</p><p>Version: {}</p><p>Author: {}</p><p>Minecraft Version: {}</p><p>Forge Version: {}</p>".format(self.entryModpackName.get(), self.entryModpackVersion.get(), self.entryModpackAuthor.get(), self.minecraftVersion, self.forgeVersion)
+
+		# Write mod information to HTML string
+		html = html + "<h1>Mod Credits</h1>"
+		for modID, mod in self.modList.mods.items(): # For every mod with a selected file
+			if mod.selectedFile != None:
+				html = html + "<h2>{}</h2>".format(mod.modName)
+				html = html + "<p>Version: {}</p><p>Author(s): {}</p><p>Website: {}</p>".format(mod.selectedFile.fileName, mod.authors, mod.modURL)
+
+		html = html + "</body></html>"
+		return html
+
 	# Creates a modpack folder in the user's "Downloads" directory, then adds a generated manifest.json and zips the folder for easy import into MultiMC
 	# TODO: Check to make sure MC/Forge versions are valid, and that the modpack has a name/version/author
 	# TODO: Checkbox to allow user to specify whether or not to zip the modpack when done
@@ -302,24 +320,10 @@ class Application():
 			pass
 		with open(modpackFolder + '\\manifest.json', 'w') as manifestFile:
 			json.dump(self.createManifest(), manifestFile)
+		with open(modpackFolder + '\\credits.html', 'w') as creditsFile:
+			creditsFile.write(self.createModpackCredits())
 
-		# Zip the modpack
-		#filePaths = []
-		#for root, directories, files in os.walk(modpackFolder):
-		#	for filename in files:
-		#		filepath = os.path.join(root, filename)
-		#		filePaths.append(filepath)
-		#		#filePaths.append(filename)
-
-		#print("Zipping the following files:")
-		#for filename in filePaths:
-		#	print(filename)
-
-		
-		#with ZipFile(modpackFolder + '.zip', 'w') as zip:
-		#	for file in filePaths:
-		#		zip.write(file)
-
+		# Zip the modpack for easy import into MultiMC
 		shutil.make_archive(modpackFolder, 'zip', modpackFolder)
 
 
