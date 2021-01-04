@@ -338,12 +338,21 @@ class Application():
 
 			mod.selectedFile = None
 
+			# modListWidgets   - a dict of {modID: tuples}, where the tuples are of Tkinter widgets for displaying each Mod: (labelModName, comboboxFileName, comboboxFileDict, labelModAuthors, labelModLicense, buttonModRemove)
 			# If mod already has a set of widgets:
 			if modID in self.modListWidgets:
 				print("Mod {} already has widgets. Updating widgets".format(mod.modName))
+				print("i is {}".format(i));
+				self.modListWidgets[modID].labelModName.grid(row=i, column=0);
+				self.modListWidgets[modID].comboboxFileName.grid(row=i, column=1);
+				self.modListWidgets[modID].labelModAuthors.grid(row=i, column=2);
+				self.modListWidgets[modID].labelModLicense.grid(row=i, column=3);
+				self.modListWidgets[modID].buttonModRemove.grid(row=i, column=4);
+
 			# If mod doesn't have a set of widgets yet:
 			else:
 				print("Creating new widgets for Mod {}".format(mod.modName))
+				print("i is {}".format(i));
 				# Create Mod name label
 				labelName = tkinter.Label(self.scrollFrameModList.viewPort, text=mod.modName)
 				labelName.grid(row=i, column=0)
