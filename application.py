@@ -95,14 +95,15 @@ class Application():
 		# Setup main window
 		self.mainWindow = tkinter.Tk()
 		self.mainWindow.geometry("700x700")
-		self.mainWindow.resizable(False, False) # Make the main window not resizable
+		#self.mainWindow.resizable(False, False) # Make the main window not resizable
+		self.mainWindow.resizable(True, True) # Make the main window resizable
 		self.mainWindow.title("PackCrafter Alpha")
 
 		# Grid resizing configuration
-		#for i in range(3):
-		#	self.mainWindow.columnconfigure(i, weight=1, minsize=150)
-		#for i in range(2):
-		#	mainWindow.rowconfigure(i, weight=1, minsize=50, maxsize)
+		for i in range(3):
+			self.mainWindow.columnconfigure(i, weight=1, minsize=150)
+		for i in range(2):
+			self.mainWindow.rowconfigure(i, weight=1, minsize=50)
 
 		# Setup modpack name entry
 		self.frameModpackName = tkinter.Frame(master=self.mainWindow, borderwidth=2)
@@ -149,7 +150,7 @@ class Application():
 		self.forgeVersionDict = {} # A dict for storing {"Forge name string w/ recommended/latest info": "normal Forge name string"}
 
 		# Setup mod list section
-		self.scrollFrameModList = ScrollFrame(self.mainWindow, width=650)
+		self.scrollFrameModList = ScrollFrame(self.mainWindow, width=1920)
 		self.scrollFrameModList.grid(row=2, column=0, rowspan=5, columnspan=3)
 
 		# Setup add mod button
@@ -324,7 +325,7 @@ class Application():
 			creditsFile.write(self.createModpackCredits())
 
 		# Zip the modpack for easy import into MultiMC
-		shutil.make_archive(modpackFolder, 'zip', modpackFolder)
+		#shutil.make_archive(modpackFolder, 'zip', modpackFolder)
 
 
 	# Update all the available files in the combobox for each mod in the modpack
@@ -364,7 +365,7 @@ class Application():
 				self.modListWidgets[modID] = widgets
 
 			# Put Mod Files in combobox
-			modFiles = sorted([file for file in mod.files if file.mcVersion == self.comboboxMCVersion.get()], key=lambda x: version.parse(x.fileName), reverse=True)
+			modFiles = sorted([file for file in mod.files if self.comboboxMCVersion.get() in file.mcVersions], key=lambda x: version.parse(x.fileName), reverse=True)
 
 			# If no Minecraft version is selected:
 			if self.comboboxMCVersion.get() == '':

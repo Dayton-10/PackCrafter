@@ -91,7 +91,7 @@ class ReleaseType(IntEnum):
 class File():
 	# Instance variables:
 	#   mod          - a reference to the Mod object this File object is a referenced in
-	#   mcVersion    - a string containing the version of Minecraft this file is for
+	#   mcVersions   - a list of strings containing the versions of Minecraft this file is compatible with
 	#   fileID       - the CurseForge "File ID" for this file
 	#   fileName     - the name of the file on CurseForge (includes extension)
 	#   fileURL      - a string containing the download URL for this file on CurseForge
@@ -102,9 +102,10 @@ class File():
 	# Creates a new File object based on a chosen file from a getAddonFiles() call
 	def __init__(self, mod, fileListItem):
 		self.mod       = mod
+		self.mcVersions = [];
 		for gameVersion in fileListItem['gameVersion']:
 			if gameVersion != 'Forge':
-				self.mcVersion = gameVersion
+				self.mcVersions.append(gameVersion);
 		self.fileID      = fileListItem['id']
 		self.fileName    = fileListItem['fileName']
 		self.fileURL     = fileListItem['downloadUrl']
