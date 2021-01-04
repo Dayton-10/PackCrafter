@@ -365,10 +365,10 @@ class Application():
 				self.modListWidgets[modID] = widgets
 
 			# Put Mod Files in combobox
-			modFiles = sorted([file for file in mod.files if self.comboboxMCVersion.get() in file.mcVersions], key=lambda x: version.parse(x.fileName), reverse=True)
+			modFiles = sorted([file for file in mod.files if (self.minecraftVersion in file.mcVersions)], key=lambda x: version.parse(x.fileName), reverse=True)
 
 			# If no Minecraft version is selected:
-			if self.comboboxMCVersion.get() == '':
+			if self.minecraftVersion == None:
 				self.modListWidgets[modID].comboboxFileName['values'] = ['Select a version of Minecraft']
 				self.modListWidgets[modID].comboboxFileName['state'] = 'disabled'
 				self.modListWidgets[modID].comboboxFileName.current(0)
@@ -379,6 +379,7 @@ class Application():
 				self.modListWidgets[modID].comboboxFileName.current(0)
 			# Otherwise, list relevant Files
 			else:
+				self.modListWidgets[modID].comboboxFileDict.clear(); # Reset file dictionary
 				for file in modFiles:
 					# Record File release type
 					if file.releaseType == modlist.ReleaseType.ALPHA:
@@ -390,6 +391,7 @@ class Application():
 					else:
 						self.modListWidgets[modID].comboboxFileDict[file.fileName + " (Unknown Type)"] = file
 
+				# Setup combobox with list of valid files
 				self.modListWidgets[modID].comboboxFileName['values'] = ['Choose a mod file']
 				self.modListWidgets[modID].comboboxFileName.current(0)
 				self.modListWidgets[modID].comboboxFileName['values'] = [key for key, value in self.modListWidgets[modID].comboboxFileDict.items()]

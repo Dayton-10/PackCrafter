@@ -103,9 +103,11 @@ class File():
 	def __init__(self, mod, fileListItem):
 		self.mod       = mod
 		self.mcVersions = [];
+		print('\n\nMod File Supported Versions:');
 		for gameVersion in fileListItem['gameVersion']:
 			if gameVersion != 'Forge':
 				self.mcVersions.append(gameVersion);
+				print('{}'.format(gameVersion));
 		self.fileID      = fileListItem['id']
 		self.fileName    = fileListItem['fileName']
 		self.fileURL     = fileListItem['downloadUrl']
